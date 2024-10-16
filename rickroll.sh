@@ -1,8 +1,8 @@
 #!/bin/bash
 # Rick Astley in your Terminal adapted from this github https://github.com/keroserene/rickrollrc/blob/master/roll.sh
 
-video_url="https://github.com/Jewber11/rickroll/raw/refs/heads/main/rickroll.full.bz2"
-video_file="/tmp/rickroll.full"
+video_url= "https://github.com/wboulton/terminalRickroll/blob/main/rickroll.full.bz2"
+video_file= "/tmp/rickroll.full"
 
 red='\x1b[38;5;9m'
 purp='\x1b[38;5;171m'
