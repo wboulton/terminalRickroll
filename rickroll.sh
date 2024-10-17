@@ -1,8 +1,10 @@
 #!/bin/bash
-# Rick Astley in your Terminal adapted from this github https://github.com/keroserene/rickrollrc/blob/master/roll.sh
-
+# Rick Astley in your Terminal - Adapted from this github page: https://github.com/keroserene/rickrollrc/tree/master
 video_url="https://github.com/wboulton/terminalRickroll/raw/refs/heads/main/rickroll.full.bz2"
+audio_url="https://github.com/wboulton/terminalRickroll/raw/refs/heads/main/roll.wav"  # Assuming the correct .wav file URL
+
 video_file="/tmp/rickroll.full"
+audio_file="/tmp/roll.wav"
 
 red='\x1b[38;5;9m'
 purp='\x1b[38;5;171m'
@@ -10,15 +12,20 @@ purp='\x1b[38;5;171m'
 # Function to handle cleanup and exit gracefully
 cleanup() {
   echo -e "\x1b[2J \x1b[0H ${purp}<3 \x1b[?25h \x1b[u \x1b[m"
-  rm -f "$video_file.bz2" "$video_file"  # Clean up downloaded files
+  rm -f "$video_file.bz2" "$video_file" "$audio_file"  # Clean up files
 }
 trap cleanup EXIT  # Call cleanup on exit
 
-# Download the video using wget
+# Download video and audio using wget
 wget -q -O "$video_file.bz2" "$video_url"
+wget -q -O "$audio_file" "$audio_url"
 
-# Decompress the downloaded file
+# Decompress the video file
 bunzip2 -f "$video_file.bz2"
+
+# Play the audio in the background using paplay
+paplay "$audio_file" &
+audio_pid=$!
 
 # Play the video using Python to manage frame sync
 python3 <(cat << 'EOF'
@@ -49,3 +56,6 @@ except KeyboardInterrupt:
     pass
 EOF
 ) < "$video_file"
+
+# Wait for the audio to finish
+wait $audio_pid
