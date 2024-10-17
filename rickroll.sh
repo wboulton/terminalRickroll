@@ -25,7 +25,7 @@ python3 <(cat << 'EOF'
 import sys
 import time
 
-fps = 100
+fps = 25
 time_per_frame = 1.0 / fps
 buf = ''
 frame = 0
